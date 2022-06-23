@@ -36,11 +36,31 @@ class ChessTest: XCTestCase {
     }
 
     func test_생성() {
-        let king = King()
-        king.setPosition(input: "D1")
+        guard let king = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        //king.setPosition(input: "D1")
         print(king.x, king.y)
         XCTAssertEqual(king.x, 3)
         XCTAssertEqual(king.y, 0)
+    }
+
+    func test_초기위치_성공() {
+        let blackKing = King(color: .black, input: "D1")
+        let whiteKing = King(color: .white, input: "D8")
+
+        XCTAssertNotNil(blackKing, "")
+        XCTAssertNotNil(whiteKing, "")
+
+    }
+
+    func test_초기위치_실패() {
+        let blackKing = King(color: .black, input: "A2")
+        let whiteKing = King(color: .white, input: "D2")
+
+        XCTAssertNil(blackKing, "")
+        XCTAssertNil(whiteKing, "")
     }
 
     func test_이동() {
@@ -48,7 +68,7 @@ class ChessTest: XCTestCase {
     }
     
     func test_ex() {
-        XCTFail()
+        //XCTFail()
 
 
     }

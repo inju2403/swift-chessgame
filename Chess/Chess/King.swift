@@ -12,10 +12,32 @@ class King {
     var x: Int
     var y: Int
 
-    init() {
-        color = .black
+
+    init?(color: PieceColor, input: String) {
+        self.color = color
         x = 0
         y = 0
+
+        // D1, D8
+        if color == .black {
+            if input != "D1" {
+                return nil
+            }
+        } else {
+            if input != "D8" {
+                return nil
+            }
+        }
+
+        setPosition(input: input)
+    }
+
+    func isRange(x: Int, y: Int) -> Bool {
+        if x < 0 || x > 7 || y < 0 || y > 7 {
+            return false
+        }
+
+        return true
     }
     
     func setPosition(x: Int, y: Int) {
