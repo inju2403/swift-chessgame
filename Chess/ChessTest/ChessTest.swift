@@ -34,6 +34,8 @@ class ChessTest: XCTestCase {
     
     func test_ex() {
         XCTFail()
+
+        
     }
 
 }
