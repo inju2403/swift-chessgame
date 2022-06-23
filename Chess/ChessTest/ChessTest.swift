@@ -8,9 +8,12 @@
 import XCTest
 
 class ChessTest: XCTestCase {
+    
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+
+
     }
 
     override func tearDownWithError() throws {
@@ -31,11 +34,19 @@ class ChessTest: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+
+    func test_생성() {
+
+    }
+
+    func test_이동() {
+
+    }
     
     func test_ex() {
         XCTFail()
 
-        
+
     }
 
 }

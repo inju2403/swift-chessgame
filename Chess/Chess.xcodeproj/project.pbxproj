@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A11C35B728644903001EAB0B /* King.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C35B628644903001EAB0B /* King.swift */; };
+		A11C35B928644AA5001EAB0B /* Commander.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C35B828644AA5001EAB0B /* Commander.swift */; };
 		C2F35D0A286444670036AD0D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35D09286444670036AD0D /* main.swift */; };
 		C2F35D172864450E0036AD0D /* ChessTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35D162864450E0036AD0D /* ChessTest.swift */; };
 		C2F35D1B2864451E0036AD0D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35D09286444670036AD0D /* main.swift */; };
@@ -25,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A11C35B628644903001EAB0B /* King.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = King.swift; sourceTree = "<group>"; };
+		A11C35B828644AA5001EAB0B /* Commander.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commander.swift; sourceTree = "<group>"; };
 		C2F35D06286444670036AD0D /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F35D09286444670036AD0D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C2F35D142864450E0036AD0D /* ChessTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				C2F35D09286444670036AD0D /* main.swift */,
+				A11C35B628644903001EAB0B /* King.swift */,
+				A11C35B828644AA5001EAB0B /* Commander.swift */,
 			);
 			path = Chess;
 			sourceTree = "<group>";
@@ -172,6 +178,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A11C35B728644903001EAB0B /* King.swift in Sources */,
+				A11C35B928644AA5001EAB0B /* Commander.swift in Sources */,
 				C2F35D0A286444670036AD0D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
