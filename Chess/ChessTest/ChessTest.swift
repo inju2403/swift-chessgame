@@ -8,8 +8,6 @@
 import XCTest
 
 class ChessTest: XCTestCase {
-    var commander = Commander()
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -63,14 +61,62 @@ class ChessTest: XCTestCase {
         XCTAssertNil(whiteKing, "")
     }
 
-    func test_이동() {
-
+    func test_이동_성공() {
+        guard let blackKing = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        
+        let command = Commander(king: blackKing)
+        // 전후, 좌우
+        XCTAssertEqual(command.move(dx: 1, dy: 0), true)
+        XCTAssertEqual(command.move(dx: -1, dy: 0), true)
+        XCTAssertEqual(command.move(dx: 0, dy: 1), true)
+        XCTAssertEqual(command.move(dx: 0, dy: -1), true)
+        
+        // 대각선
+        XCTAssertEqual(command.move(dx: 1, dy: 1), true)
+        XCTAssertEqual(command.move(dx: -1, dy: -1), true)
+        XCTAssertEqual(command.move(dx: -1, dy: 1), true)
+        XCTAssertEqual(command.move(dx: 1, dy: -1), true)
+        
+        XCTAssertEqual(blackKing.x, 3)
+        XCTAssertEqual(blackKing.y, 0)
     }
     
-    func test_ex() {
-        //XCTFail()
-
-
+    func test_이동_실패() {
+        guard let blackKing = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        
+        let command = Commander(king: blackKing)
+        XCTAssertEqual(command.move(dx: 1, dy: -1), false)
     }
-
+    
+    func test_같은킹인지확인_성공() {
+        guard let blackKing1 = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        guard let blackKing2 = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(blackKing1 == blackKing2, true)
+    }
+    
+    func test_같은킹인지확인_실패() {
+        guard let blackKing = King(color: .black, input: "D1") else {
+            XCTFail()
+            return
+        }
+        guard let whiteKing = King(color: .white, input: "D8") else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(blackKing == whiteKing, false)
+    }
 }

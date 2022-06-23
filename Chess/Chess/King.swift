@@ -60,6 +60,18 @@ class King {
     }
 }
 
+extension King: Equatable {
+    static func == (lhs: King, rhs: King) -> Bool {
+        if
+            lhs.color == rhs.color
+            && lhs.x == rhs.x
+            && lhs.y == rhs.y {
+            return true
+        }
+        return false
+    }
+}
+
 enum PieceColor {
     case black
     case white
