@@ -5,7 +5,6 @@
 //  Created by joel.inju on 2022/06/20.
 //
 
-
 struct Pawn: Chessman {
     var score: Int = 1
     var type: ChessmanType

@@ -10,7 +10,7 @@ import Foundation
 
 class Board {
     private var subscriptions = Set<AnyCancellable>()
-    var position = [[Chessman?]](repeating: [Chessman?](repeating: nil, count: 8), count: 8)
+    var position: [[Chessman?]]
     let manager: ChessGameManager
     
     init(position: [[Chessman?]]) {
