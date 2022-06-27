@@ -26,6 +26,7 @@ class ChessGameManager {
         case .move:
             // 이동 명령을 수행하고 board, whiteScore, blackScore를 업데이트한다.
             // do something
+            
             return true
         case .help:
             // 이동 가능한 위치를 possiblePositions에 저장한다.
@@ -38,8 +39,47 @@ class ChessGameManager {
     
     /// 인풋을 검사하는 함수
     func isValidInput(_ input: String) -> ChessInput {
-        // do something
-        return .move
+        guard input.count == 3 || input.count == 6 else {
+            return .invalid
+        }
+        
+        let command = Array(input)
+        switch command.count {
+        case 3:
+            if command[0] == "?"
+                && isFile(command[1])
+                && isRank(command[2]) {
+                return .help
+            }
+            return .invalid
+        case 6:
+            if isFile(command[0])
+                && isRank(command[1])
+                && command[2] == "-"
+                && command[3] == ">"
+                && isFile(command[4])
+                && isRank(command[5]) {
+                return .move
+            }
+            return .invalid
+        default:
+            return .invalid
+        }
+    }
+    
+    func isFile(_ char: Character) -> Bool {
+        if char >= "A" && char <= "H" {
+            return true
+        }
+        return false
+    }
+    
+    func isRank(_ char: Character) -> Bool {
+        if let rank = Int(String(char)),
+           (0...7 ~= rank) {
+            return true
+        }
+        return false
     }
 }
 
