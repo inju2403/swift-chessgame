@@ -7,9 +7,11 @@
 
 struct Queen: Chessman {
     var score: Int = 9
+    var type: ChessmanType
     var color: ChessmanColor
     
-    init(color: ChessmanColor) {
+    init(type: ChessmanType, color: ChessmanColor) {
+        self.type = type
         self.color = color
     }
 }

@@ -54,8 +54,25 @@ class ChessGameManager {
             return false
         case .help:
             // 이동 가능한 위치를 possiblePositions에 저장한다.
-            
-            return true
+            possiblePositions = []
+            let curY = Rank(rawValue: command[1])!.index
+            let curX = File(rawValue: command[0].lowercased())!.index
+            if let chessman = boardPosition[curY][curX] {
+                switch chessman.type {
+                case .pawn:
+                    judgePossiblePositionsPawn(curY, curX, chessman)
+                case .bishop:
+                    judgePossiblePositionsBishop(curY, curX, chessman)
+                case .luke:
+                    judgePossiblePositionsLuke(curY, curX, chessman)
+                case .queen:
+                    judgePossiblePositionsQueen(curY, curX, chessman)
+                case .knight:
+                    judgePossiblePositionsKnight(curY, curX, chessman)
+                }
+                return true
+            }
+            return false
         case .invalid:
             return false
         }
@@ -105,6 +122,14 @@ class ChessGameManager {
         return false
     }
     
+    func isRange(_ y: Int, _ x: Int) -> Bool {
+        if y < 0 || y > 7 || x < 0 || x > 7 {
+            return false
+        }
+
+        return true
+    }
+    
     func scoreUpdate(_ chessman: Chessman) {
         switch chessman.color {
         case .black:
@@ -112,6 +137,48 @@ class ChessGameManager {
         case .white:
             whiteScore -= chessman.score
         }
+    }
+    
+    func judgePossiblePositionsPawn(_ curY: Int, _ curX: Int, _ chessman: Chessman) {
+        var nextY: Int
+        var nextX: Int
+        
+        switch chessman.color {
+        case .black:
+            nextY = curY - 1
+            nextX = curX
+        case .white:
+            nextY = curY + 1
+            nextX = curX
+        }
+        
+        if isRange(nextY, nextX) == true {
+            if let destinationChessman = boardPosition[nextY][nextX],
+                destinationChessman.color == .white {
+                possiblePositions.append(positionToString(nextY, nextX))
+            }
+        }
+    }
+    
+    func judgePossiblePositionsBishop(_ curY: Int, _ curX: Int, _ chessman: Chessman) {
+        
+    }
+    
+    func judgePossiblePositionsLuke(_ curY: Int, _ curX: Int, _ chessman: Chessman) {
+        
+    }
+    
+    func judgePossiblePositionsQueen(_ curY: Int, _ curX: Int, _ chessman: Chessman) {
+        
+    }
+    
+    func judgePossiblePositionsKnight(_ curY: Int, _ curX: Int, _ chessman: Chessman) {
+        
+    }
+    
+    func positionToString(_ y: Int, _ x: Int) -> String {
+        // x - file / y - rank
+        return String(Int(UnicodeScalar("A").value) + x) + String(y)
     }
 }
 

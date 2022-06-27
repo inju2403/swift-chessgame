@@ -9,7 +9,16 @@ import Foundation
 
 protocol Chessman {
     var score: Int { get }
+    var type: ChessmanType { get }
     var color: ChessmanColor { get }
+}
+
+enum ChessmanType {
+    case pawn
+    case bishop
+    case luke
+    case queen
+    case knight
 }
 
 enum ChessmanColor {
