@@ -8,13 +8,13 @@
 import Foundation
 
 class ChessGameManager {
-    @Published var board: [Chessman]
+    @Published var boardPosition: [[Chessman?]]
     var whiteScore: Int
     var blackScore: Int
     var possiblePositions = [String]()
     
-    init(board: [Chessman], whiteScore: Int = 38, blackScore: Int = 38) {
-        self.board = board
+    init(boardPosition: [[Chessman?]], whiteScore: Int = 38, blackScore: Int = 38) {
+        self.boardPosition = boardPosition
         self.whiteScore = whiteScore
         self.blackScore = blackScore
     }

@@ -7,15 +7,11 @@
 
 import Foundation
 
-class Pawn: Chessman {
+struct Pawn: Chessman {
     var score: Int = 1
-    var y: Int
-    var x: Int
     var color: ChessmanColor
     
-    init(y: Int, x: Int, color: ChessmanColor) {
-        self.y = y
-        self.x = x
+    init(color: ChessmanColor) {
         self.color = color
     }
 }

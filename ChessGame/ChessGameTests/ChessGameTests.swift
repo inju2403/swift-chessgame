@@ -9,12 +9,12 @@ import XCTest
 @testable import ChessGame
 
 class ChessGameTests: XCTestCase {
+    let board = Board(position: [[Chessman?]](repeating: [Chessman?](repeating: nil, count: 8), count: 8))
+    
     func test_A7백색폰앞으로1칸이동_성공케이스() {
         // given
-        let board = Board(board: [
-            Pawn(y: 1, x: 0, color: ChessmanColor.black),
-            Pawn(y: 2, x: 0, color: ChessmanColor.white)
-        ])
+        board.position[1][0] = Pawn(color: .white)
+        board.position[2][0] = Pawn(color: .black)
         board.observeBoard()
         let inputs = ["A2->A1"]
         
@@ -32,10 +32,8 @@ class ChessGameTests: XCTestCase {
     
     func test_A7백색폰앞으로1칸이동_실패케이스() {
         // given
-        let board = Board(board: [
-            Pawn(y: 1, x: 0, color: ChessmanColor.white),
-            Pawn(y: 2, x: 0, color: ChessmanColor.white)
-        ])
+        board.position[1][0] = Pawn(color: .white)
+        board.position[2][0] = Pawn(color: .white)
         board.observeBoard()
         let inputs = ["A2->A1"]
         
@@ -53,9 +51,7 @@ class ChessGameTests: XCTestCase {
     
     func test_백색폰_도움말_성공케이스1() {
         // given
-        let board = Board(board: [
-            Pawn(y: 2, x: 0, color: ChessmanColor.white)
-        ])
+        board.position[2][0] = Pawn(color: .white)
         board.observeBoard()
         let inputs = ["?A1"]
         
@@ -75,10 +71,8 @@ class ChessGameTests: XCTestCase {
     
     func test_백색폰_도움말_성공케이스2() {
         // given
-        let board = Board(board: [
-            Pawn(y: 1, x: 0, color: ChessmanColor.white),
-            Pawn(y: 2, x: 0, color: ChessmanColor.white)
-        ])
+        board.position[1][0] = Pawn(color: .white)
+        board.position[2][0] = Pawn(color: .white)
         board.observeBoard()
         let inputs = ["?A2"]
         
