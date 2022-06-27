@@ -22,15 +22,39 @@ class ChessGameManager {
     /// 이 함수에서 명령을 처리하여 board를 업데이트한다.
     /// 처리할 수 없는 명령에서는 false를 리턴한다.
     func perform(_ input: String) -> Bool {
-        switch isValidInput(input) {
+        let command = Array(input)
+        switch isValidInput(command) {
         case .move:
             // 이동 명령을 수행하고 board, whiteScore, blackScore를 업데이트한다.
-            // do something
+            let curY = Rank(rawValue: command[1])!.index
+            let curX = File(rawValue: command[0].lowercased())!.index
             
-            return true
+            let nextY = Rank(rawValue: command[5])!.index
+            let nextX = File(rawValue: command[4].lowercased())!.index
+            
+            if let mover = boardPosition[curY][curX] {
+                if let destinationChessman = boardPosition[nextY][nextX] {
+                    // 도착지에 체스말이 있을 때
+                    if mover.color != destinationChessman.color {
+                        boardPosition[nextY][nextX] = mover
+                        boardPosition[curY][curX] = nil
+                        scoreUpdate(destinationChessman)
+                        return true
+                    } else {
+                        return false
+                    }
+                } else {
+                    // 도착지에 체스말이 없을 때
+                    boardPosition[nextY][nextX] = mover
+                    boardPosition[curY][curX] = nil
+                    return true
+                }
+            }
+            
+            return false
         case .help:
             // 이동 가능한 위치를 possiblePositions에 저장한다.
-            // do something
+            
             return true
         case .invalid:
             return false
@@ -38,12 +62,11 @@ class ChessGameManager {
     }
     
     /// 인풋을 검사하는 함수
-    func isValidInput(_ input: String) -> ChessInput {
-        guard input.count == 3 || input.count == 6 else {
+    func isValidInput(_ command: [Character]) -> ChessInput {
+        guard command.count == 3 || command.count == 6 else {
             return .invalid
         }
         
-        let command = Array(input)
         switch command.count {
         case 3:
             if command[0] == "?"
@@ -81,10 +104,83 @@ class ChessGameManager {
         }
         return false
     }
+    
+    func scoreUpdate(_ chessman: Chessman) {
+        switch chessman.color {
+        case .black:
+            blackScore -= chessman.score
+        case .white:
+            whiteScore -= chessman.score
+        }
+    }
 }
 
 enum ChessInput {
     case move
     case help
     case invalid
+}
+
+enum File: String {
+    case a
+    case b
+    case c
+    case d
+    case e
+    case f
+    case g
+    case h
+
+    var index: Int {
+        switch self {
+        case .a:
+            return 0
+        case .b:
+            return 1
+        case .c:
+            return 2
+        case .d:
+            return 3
+        case .e:
+            return 4
+        case .f:
+            return 5
+        case .g:
+            return 6
+        case .h:
+            return 7
+        }
+    }
+}
+
+enum Rank: Character {
+    case r1 = "1"
+    case r2 = "2"
+    case r3 = "3"
+    case r4 = "4"
+    case r5 = "5"
+    case r6 = "6"
+    case r7 = "7"
+    case r8 = "8"
+
+    var index: Int {
+        switch self {
+        case .r1:
+            return 0
+        case .r2:
+            return 1
+        case .r3:
+            return 2
+        case .r4:
+            return 3
+        case .r5:
+            return 4
+        case .r6:
+            return 5
+        case .r7:
+            return 6
+        case .r8:
+            return 7
+        }
+    }
 }
