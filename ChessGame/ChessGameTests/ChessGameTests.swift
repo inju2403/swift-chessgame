@@ -13,8 +13,8 @@ class ChessGameTests: XCTestCase {
     
     func test_A7백색폰앞으로1칸이동_성공케이스() {
         // given
-        board.position[1][0] = Pawn(type: .pawn, color: .white)
-        board.position[2][0] = Pawn(type: .pawn, color: .black)
+        board.manager.boardPosition[0][0] = Pawn(type: .pawn, color: .black)
+        board.manager.boardPosition[1][0] = Pawn(type: .pawn, color: .white)
         board.observeBoard()
         let inputs = ["A2->A1"]
         
@@ -32,8 +32,8 @@ class ChessGameTests: XCTestCase {
     
     func test_A7백색폰앞으로1칸이동_실패케이스() {
         // given
-        board.position[1][0] = Pawn(type: .pawn, color: .white)
-        board.position[2][0] = Pawn(type: .pawn, color: .white)
+        board.manager.boardPosition[0][0] = Pawn(type: .pawn, color: .white)
+        board.manager.boardPosition[1][0] = Pawn(type: .pawn, color: .white)
         board.observeBoard()
         let inputs = ["A2->A1"]
         
@@ -51,9 +51,9 @@ class ChessGameTests: XCTestCase {
     
     func test_백색폰_도움말_성공케이스1() {
         // given
-        board.position[2][0] = Pawn(type: .pawn, color: .white)
+        board.manager.boardPosition[1][0] = Pawn(type: .pawn, color: .white)
         board.observeBoard()
-        let inputs = ["?A1"]
+        let inputs = ["?A2"]
         
         // when
         for input in inputs {
@@ -65,16 +65,16 @@ class ChessGameTests: XCTestCase {
         if locations.count != 1 {
             XCTFail("test_백색폰_도움말_성공케이스1 실패")
         } else {
-            XCTAssertEqual(locations[0], "A6")
+            XCTAssertEqual(locations[0], "A1")
         }
     }
     
     func test_백색폰_도움말_성공케이스2() {
         // given
-        board.position[1][0] = Pawn(type: .pawn, color: .white)
-        board.position[2][0] = Pawn(type: .pawn, color: .white)
+        board.manager.boardPosition[1][0] = Pawn(type: .pawn, color: .white)
+        board.manager.boardPosition[2][0] = Pawn(type: .pawn, color: .white)
         board.observeBoard()
-        let inputs = ["?A2"]
+        let inputs = ["?A1"]
         
         // when
         for input in inputs {

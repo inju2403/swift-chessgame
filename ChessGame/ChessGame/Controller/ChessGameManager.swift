@@ -19,7 +19,7 @@ class ChessGameManager {
         self.blackScore = blackScore
     }
     
-    /// 이 함수에서 명령을 처리하여 board를 업데이트한다.
+    /// 이 함수에서 명령을 처리하여 boardPosition을 업데이트한다.
     /// 처리할 수 없는 명령에서는 false를 리턴한다.
     func perform(_ input: String) -> Bool {
         let command = Array(input)
@@ -38,7 +38,7 @@ class ChessGameManager {
                     if mover.color != destinationChessman.color {
                         boardPosition[nextY][nextX] = mover
                         boardPosition[curY][curX] = nil
-                        scoreUpdate(destinationChessman)
+                        updateScore(destinationChessman)
                         return true
                     } else {
                         return false
@@ -55,8 +55,9 @@ class ChessGameManager {
         case .help:
             // 이동 가능한 위치를 possiblePositions에 저장한다.
             possiblePositions = []
-            let curY = Rank(rawValue: command[1])!.index
-            let curX = File(rawValue: command[0].lowercased())!.index
+            let curY = Rank(rawValue: command[2])!.index
+            let curX = File(rawValue: command[1].lowercased())!.index
+            
             if let chessman = boardPosition[curY][curX] {
                 switch chessman.type {
                 case .pawn:
@@ -130,7 +131,7 @@ class ChessGameManager {
         return true
     }
     
-    func scoreUpdate(_ chessman: Chessman) {
+    func updateScore(_ chessman: Chessman) {
         switch chessman.color {
         case .black:
             blackScore -= chessman.score
@@ -153,8 +154,12 @@ class ChessGameManager {
         }
         
         if isRange(nextY, nextX) == true {
-            if let destinationChessman = boardPosition[nextY][nextX],
-                destinationChessman.color == .white {
+            guard let destinationChessman = boardPosition[nextY][nextX] else {
+                possiblePositions.append(positionToString(nextY, nextX))
+                return
+            }
+            
+            if destinationChessman.color == .white {
                 possiblePositions.append(positionToString(nextY, nextX))
             }
         }
@@ -178,7 +183,7 @@ class ChessGameManager {
     
     func positionToString(_ y: Int, _ x: Int) -> String {
         // x - file / y - rank
-        return String(Int(UnicodeScalar("A").value) + x) + String(y)
+        return String(UnicodeScalar(Int(UnicodeScalar("A").value) + x)!) + String(y-1)
     }
 }
 
