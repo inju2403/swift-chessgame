@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class BoardView: UIView {
-    var itemViews = [[BoardItemView]]()
+    var itemViews: [[BoardItemView]]?
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -21,7 +21,7 @@ class BoardView: UIView {
         return stackView
     }()
     
-    init(_ itemViews: [[BoardItemView]]) {
+    init(_ itemViews: [[BoardItemView]]?) {
         super.init(frame: .zero)
         
         self.itemViews = itemViews
@@ -37,7 +37,24 @@ class BoardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateItemViews(_ board: Board) {
+        guard let itemViews = itemViews else {
+            return
+        }
+        
+        let chessmans = board.position
+        for y in 0...7 {
+            for x in 0...7 {
+                itemViews[y][x].updateChessman(chessmans[y][x])
+            }
+        }
+    }
+    
     private func setItemViews() {
+        guard let itemViews = itemViews else {
+            return
+        }
+
         for index in 0...7 {
             let rankStackView = RankStackView(itemViews[index])
             stackView.addArrangedSubview(rankStackView)
@@ -57,6 +74,10 @@ class BoardView: UIView {
     }
     
     private func paintItemViews() {
+        guard let itemViews = itemViews else {
+            return
+        }
+        
         for y in 0...7 {
             for x in 0...7 {
                 itemViews[y][x].bgView.backgroundColor = (y+x) % 2 == 1 ? .systemBrown : .white

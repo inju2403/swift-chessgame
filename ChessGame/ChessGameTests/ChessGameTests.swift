@@ -13,19 +13,18 @@ class ChessGameTests: XCTestCase {
     
     func test_A7백색폰앞으로1칸이동_성공케이스() {
         // given
-        let manager = board.manager
-        manager.boardPosition[0][0] = Pawn(.pawn, .black, Position(y: 0, x: 0))
-        manager.boardPosition[1][0] = Pawn(.pawn, .white, Position(y: 1, x: 0))
-        board.observeBoard()
+        let viewModel = ChessGameViewModel(board: board)
+        board.setChessman(0, 0, Pawn(.pawn, .black, Position(y: 0, x: 0)))
+        board.setChessman(1, 0, Pawn(.pawn, .white, Position(y: 1, x: 0)))
         let inputs = ["A2->A1"]
         
         // when
         for input in inputs {
-            if board.receiveInput(input) == false {
+            if viewModel.receiveInput(input) == false {
                 XCTFail("test_A7백색폰앞으로1칸이동_성공케이스 실패")
             }
         }
-        let result = manager.whiteScore - manager.blackScore
+        let result = viewModel.whiteScore - viewModel.blackScore
         
         // then
         XCTAssertEqual(result, 1)
@@ -33,19 +32,18 @@ class ChessGameTests: XCTestCase {
     
     func test_A7백색폰앞으로1칸이동_실패케이스() {
         // given
-        let manager = board.manager
-        manager.boardPosition[0][0] = Pawn(.pawn, .white, Position(y: 0, x: 0))
-        manager.boardPosition[1][0] = Pawn(.pawn, .white, Position(y: 1, x: 0))
-        board.observeBoard()
+        let viewModel = ChessGameViewModel(board: board)
+        board.setChessman(0, 0, Pawn(.pawn, .white, Position(y: 0, x: 0)))
+        board.setChessman(1, 0, Pawn(.pawn, .white, Position(y: 1, x: 0)))
         let inputs = ["A2->A1"]
         
         // when
         for input in inputs {
-            if board.receiveInput(input) == true {
+            if viewModel.receiveInput(input) == true {
                 XCTFail("test_A7백색폰앞으로1칸이동_실패케이스 실패")
             }
         }
-        let result = manager.whiteScore - manager.blackScore
+        let result = viewModel.whiteScore - viewModel.blackScore
         
         // then
         XCTAssertEqual(result, 0)
@@ -53,18 +51,17 @@ class ChessGameTests: XCTestCase {
     
     func test_백색폰_도움말_성공케이스1() {
         // given
-        let manager = board.manager
-        manager.boardPosition[1][0] = Pawn(.pawn, .white, Position(y: 1, x: 0))
-        board.observeBoard()
+        let viewModel = ChessGameViewModel(board: board)
+        board.setChessman(1, 0, Pawn(.pawn, .white, Position(y: 1, x: 0)))
         let inputs = ["?A2"]
         
         // when
         for input in inputs {
-            _ = board.receiveInput(input)
+            _ = viewModel.receiveInput(input)
         }
         
         // then
-        let locations = manager.possiblePositions
+        let locations = viewModel.possiblePositions
         if locations.count != 1 {
             XCTFail("test_백색폰_도움말_성공케이스1 실패")
         } else {
@@ -74,18 +71,17 @@ class ChessGameTests: XCTestCase {
     
     func test_백색폰_도움말_성공케이스2() {
         // given
-        let manager = board.manager
-        manager.boardPosition[1][0] = Pawn(.pawn, .white, Position(y: 1, x: 0))
-        manager.boardPosition[2][0] = Pawn(.pawn, .white, Position(y: 2, x: 0))
-        board.observeBoard()
+        let viewModel = ChessGameViewModel(board: board)
+        board.setChessman(1, 0, Pawn(.pawn, .white, Position(y: 1, x: 0)))
+        board.setChessman(2, 0, Pawn(.pawn, .white, Position(y: 2, x: 0)))
         let inputs = ["?A1"]
         
         // when
         for input in inputs {
-            _ = board.receiveInput(input)
+            _ = viewModel.receiveInput(input)
         }
         
-        let locations = manager.possiblePositions
+        let locations = viewModel.possiblePositions
         
         // then
         XCTAssertEqual(locations.count, 0)

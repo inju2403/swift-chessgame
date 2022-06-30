@@ -24,7 +24,7 @@
 		C2F35CCC2860531A0036AD0D /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CCB2860531A0036AD0D /* Board.swift */; };
 		C2F35CCE286053210036AD0D /* Pawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CCD286053210036AD0D /* Pawn.swift */; };
 		C2F35CD0286053B20036AD0D /* Chessman.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CCF286053B20036AD0D /* Chessman.swift */; };
-		C2F35CD9286058B60036AD0D /* ChessGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CD8286058B60036AD0D /* ChessGameManager.swift */; };
+		C2F35CD9286058B60036AD0D /* ChessGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CD8286058B60036AD0D /* ChessGameViewModel.swift */; };
 		C2F35CDB28608B020036AD0D /* Bishop.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CDA28608B020036AD0D /* Bishop.swift */; };
 		C2F35CDD28608B0C0036AD0D /* Luke.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CDC28608B0C0036AD0D /* Luke.swift */; };
 		C2F35CDF28608B160036AD0D /* Queen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F35CDE28608B160036AD0D /* Queen.swift */; };
@@ -78,7 +78,7 @@
 		C2F35CCB2860531A0036AD0D /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		C2F35CCD286053210036AD0D /* Pawn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pawn.swift; sourceTree = "<group>"; };
 		C2F35CCF286053B20036AD0D /* Chessman.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chessman.swift; sourceTree = "<group>"; };
-		C2F35CD8286058B60036AD0D /* ChessGameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessGameManager.swift; sourceTree = "<group>"; };
+		C2F35CD8286058B60036AD0D /* ChessGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessGameViewModel.swift; sourceTree = "<group>"; };
 		C2F35CDA28608B020036AD0D /* Bishop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bishop.swift; sourceTree = "<group>"; };
 		C2F35CDC28608B0C0036AD0D /* Luke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Luke.swift; sourceTree = "<group>"; };
 		C2F35CDE28608B160036AD0D /* Queen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queen.swift; sourceTree = "<group>"; };
@@ -129,6 +129,7 @@
 				C25E12932869BB2C009A4564 /* BoardView.swift */,
 				C25E12952869C456009A4564 /* BoardItemView.swift */,
 				C25E1298286B31C0009A4564 /* RankStackView.swift */,
+				C2F35C9E28604C810036AD0D /* ViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				C25E12922869BB0D009A4564 /* View */,
-				C2F35CD3286055100036AD0D /* Controller */,
+				C2F35CD3286055100036AD0D /* ViewModel */,
 				C2F35CCA2860530F0036AD0D /* Model */,
 				C2F35C9A28604C810036AD0D /* AppDelegate.swift */,
 				C2F35C9C28604C810036AD0D /* SceneDelegate.swift */,
@@ -202,13 +203,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		C2F35CD3286055100036AD0D /* Controller */ = {
+		C2F35CD3286055100036AD0D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				C2F35CD8286058B60036AD0D /* ChessGameManager.swift */,
-				C2F35C9E28604C810036AD0D /* ViewController.swift */,
+				C2F35CD8286058B60036AD0D /* ChessGameViewModel.swift */,
 			);
-			path = Controller;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		D3D802A6BCB644F94D768C63 /* Pods */ = {
@@ -467,7 +467,7 @@
 				C2F35CD0286053B20036AD0D /* Chessman.swift in Sources */,
 				C2F35CDD28608B0C0036AD0D /* Luke.swift in Sources */,
 				C2F35C9B28604C810036AD0D /* AppDelegate.swift in Sources */,
-				C2F35CD9286058B60036AD0D /* ChessGameManager.swift in Sources */,
+				C2F35CD9286058B60036AD0D /* ChessGameViewModel.swift in Sources */,
 				C25E1299286B31C0009A4564 /* RankStackView.swift in Sources */,
 				C2F35CDB28608B020036AD0D /* Bishop.swift in Sources */,
 				C2F35CDF28608B160036AD0D /* Queen.swift in Sources */,

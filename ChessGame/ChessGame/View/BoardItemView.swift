@@ -24,7 +24,7 @@ class BoardItemView: UIView {
         return label
     }()
     
-    var chessman: Chessman? {
+    private var chessman: Chessman? {
         didSet {
             renewView()
         }
@@ -56,6 +56,10 @@ class BoardItemView: UIView {
         super.init(coder: coder)
     }
     
+    func updateChessman(_ chessman: Chessman?) {
+        self.chessman = chessman
+    }
+    
     private func bindConstraints() {
         self.addSubview(bgView)
         self.addSubview(chessmanShapeLabel)
@@ -83,5 +87,9 @@ class BoardItemView: UIView {
     
     @objc func touchChessman(_ sender: UIGestureRecognizer) {
         touched = true
+    }
+    
+    func posNum() -> Int? {
+        return chessman?.position.posNum
     }
 }

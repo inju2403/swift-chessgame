@@ -1,22 +1,31 @@
 //
-//  ChessGameManager.swift
+//  ChessGameViewModel.swift
 //  ChessGame
 //
 //  Created by joel.inju on 2022/06/20.
 //
 
+import Combine
 import Foundation
 
-class ChessGameManager {
-    @Published var boardPosition: [[Chessman?]]
+class ChessGameViewModel {
+    @Published var board: Board
     @Published var whiteScore: Int
     @Published var blackScore: Int
+    @Published var selectedItemView: BoardItemView?
     var possiblePositions = [String]()
+    private var subscriptions = Set<AnyCancellable>()
     
-    init(boardPosition: [[Chessman?]], whiteScore: Int = 38, blackScore: Int = 38) {
-        self.boardPosition = boardPosition
+    init(board: Board, whiteScore: Int = 38, blackScore: Int = 38) {
+        self.board = board
         self.whiteScore = whiteScore
         self.blackScore = blackScore
+    }
+    
+    /// 단위테스트에 사용되는 함수
+    func receiveInput(_ input: String) -> Bool {
+        let isPossible = perform(input)
+        return isPossible
     }
     
     /// 이 함수에서 명령을 처리하여 boardPosition을 업데이트한다.
@@ -32,12 +41,12 @@ class ChessGameManager {
             let nextY = Rank(rawValue: command[5])!.index
             let nextX = File(rawValue: command[4].lowercased())!.index
             
-            if let mover = boardPosition[curY][curX] {
-                if let destinationChessman = boardPosition[nextY][nextX] {
+            if let mover = board.position(curY, curX) {
+                if let destinationChessman = board.position(nextY, nextX) {
                     // 도착지에 체스말이 있을 때
                     if mover.color != destinationChessman.color {
-                        boardPosition[nextY][nextX] = mover
-                        boardPosition[curY][curX] = nil
+                        board.setChessman(nextY, nextX, mover)
+                        board.setChessman(curY, curX, nil)
                         updateScore(destinationChessman)
                         return true
                     } else {
@@ -45,8 +54,8 @@ class ChessGameManager {
                     }
                 } else {
                     // 도착지에 체스말이 없을 때
-                    boardPosition[nextY][nextX] = mover
-                    boardPosition[curY][curX] = nil
+                    board.setChessman(nextY, nextX, mover)
+                    board.setChessman(curY, curX, nil)
                     return true
                 }
             }
@@ -58,7 +67,7 @@ class ChessGameManager {
             let curY = Rank(rawValue: command[2])!.index
             let curX = File(rawValue: command[1].lowercased())!.index
             
-            if let chessman = boardPosition[curY][curX] {
+            if let chessman = board.position(curY, curX) {
                 switch chessman.type {
                 case .pawn:
                     judgePossiblePositionsPawn(curY, curX, chessman)
@@ -108,6 +117,52 @@ class ChessGameManager {
         }
     }
     
+    func setTouchEvent(_ boardView: BoardView) {
+        guard let itemViews = boardView.itemViews else {
+            return
+        }
+        
+        for y in 0...7 {
+            for x in 0...7 {
+                let itemView = itemViews[y][x]
+                itemView.$touched
+                    .sink { [weak self] touched in
+                        guard
+                            touched == true,
+                            let self = self,
+                            let posNum = itemView.posNum()
+                        else {
+                            return
+                        }
+                        
+                        guard let selectedItemView = self.selectedItemView else {
+                            // 체스판 위에 선택된 말이 없을 때
+                            itemView.bgView.backgroundColor = .systemRed
+                            self.selectedItemView = itemView
+                            return
+                        }
+                        
+                        if selectedItemView == itemView {
+                            // 체스판 위에 선택된 말이 자기 자신일 때
+                            itemView.bgView.backgroundColor = posNum % 2 == 1 ? .systemBrown : .white
+                            self.selectedItemView = nil
+                        } else {
+                            // 체스판 위에 선택된 말이 다른 말일 때
+                            // 이동 관련 로직 처리 TODO - perform 함수를 이용하여 이동 관련 로직을 처리하고 Board를 업데이트한다.
+                            
+                            
+                            // 다른 말로 포커싱을 바꾼다.
+                            guard let posNum = selectedItemView.posNum() else { return }
+                            selectedItemView.bgView.backgroundColor = posNum % 2 == 1 ? .systemBrown : .white
+                            itemView.bgView.backgroundColor = .systemRed
+                            self.selectedItemView = itemView
+                        }
+                    }
+                    .store(in: &subscriptions)
+            }
+        }
+    }
+    
     func isFile(_ char: Character) -> Bool {
         if char >= "A" && char <= "H" {
             return true
@@ -154,7 +209,7 @@ class ChessGameManager {
         }
         
         if isRange(nextY, nextX) == true {
-            guard let destinationChessman = boardPosition[nextY][nextX] else {
+            guard let destinationChessman = board.position(nextY, nextX) else {
                 possiblePositions.append(positionToString(nextY, nextX))
                 return
             }
