@@ -11,6 +11,15 @@ import XCTest
 class ChessGameTests: XCTestCase {
     let board = Board(position: [[Chessman?]](repeating: [Chessman?](repeating: nil, count: 8), count: 8))
     
+    func test_보드세팅_성공() {
+        // given
+        board.setChessman(0, 0, Pawn(.pawn, .black, Position(y: 0, x: 0)))
+        let chessman = board.position(0, 0)
+        
+        // then
+        XCTAssertNotNil(chessman, "test_보드세팅_성공케이스 실패")
+    }
+    
     func test_A7백색폰앞으로1칸이동_성공케이스() {
         // given
         let viewModel = ChessGameViewModel(board: board)
