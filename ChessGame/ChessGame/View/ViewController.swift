@@ -13,7 +13,6 @@ import SnapKit
 class ViewController: UIViewController {
     private var boardView = BoardView()
     private var viewModel: ChessGameViewModel?
-    private var selectedItemView: BoardItemView?
     private var subscriptions = Set<AnyCancellable>()
 
     private let titleLabel: UILabel = {
@@ -44,7 +43,6 @@ class ViewController: UIViewController {
         initViewModel()
         setBoardView()
         setViews()
-        setTouchEvents()
         setAccessibilityIdentifier()
     }
     
@@ -107,6 +105,12 @@ class ViewController: UIViewController {
         }
         
         boardView = BoardView(itemViews)
+        
+        boardView.touchEventSubject
+            .sink { [weak self] position in
+                self?.viewModel?.setTouchEvent(position)
+            }
+            .store(in: &subscriptions)
     }
 
     private func setViews() {
@@ -139,10 +143,6 @@ class ViewController: UIViewController {
         }
     }
     
-    private func setTouchEvents() {
-        viewModel?.setTouchEvent(boardView)
-    }
-    
     private func observeViewModel() {
         guard let viewModel = viewModel else {
             return
@@ -158,9 +158,15 @@ class ViewController: UIViewController {
             }
             .store(in: &subscriptions)
         
-        viewModel.$selectedItemView
-            .sink { [weak self] selectedItemView in
-                self?.selectedItemView = selectedItemView
+        viewModel.$selectedPosition
+            .sink { [weak self] selectedPosition in
+                self?.boardView.selectItemView(selectedPosition)
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.$deselectedPosition
+            .sink { [weak self] deselectedPosition in
+                self?.boardView.deselectItemView(deselectedPosition)
             }
             .store(in: &subscriptions)
 

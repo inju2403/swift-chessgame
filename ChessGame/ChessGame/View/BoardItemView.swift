@@ -30,7 +30,7 @@ class BoardItemView: UIView {
         }
     }
     
-    @Published var touched = false
+    @Published var touched: Position?
     
     private func renewView() {
         chessmanShapeLabel.text = "."
@@ -86,7 +86,11 @@ class BoardItemView: UIView {
     }
     
     @objc func touchChessman(_ sender: UIGestureRecognizer) {
-        touched = true
+        guard let position = chessman?.position else {
+            return
+        }
+        
+        touched = position
     }
     
     func posNum() -> Int? {

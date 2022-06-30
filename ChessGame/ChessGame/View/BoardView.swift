@@ -5,12 +5,16 @@
 //  Created by joel.inju on 2022/06/27.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
 
 class BoardView: UIView {
     var itemViews: [[BoardItemView]]?
+    
+    let touchEventSubject = PassthroughSubject<Position, Never>()
+    private var subscriptions = Set<AnyCancellable>()
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -37,6 +41,37 @@ class BoardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func selectItemView(_ position: Position?) {
+        guard
+            let itemViews = itemViews,
+            let position = position
+        else {
+            return
+        }
+        
+        let y = position.y
+        let x = position.x
+        
+        itemViews[y][x].bgView.backgroundColor = .systemRed
+    }
+    
+    func deselectItemView(_ tuple: (Position, UIColor)?) {
+        guard
+            let itemViews = itemViews,
+            let tuple = tuple
+        else {
+            return
+        }
+        
+        let position = tuple.0
+        let color = tuple.1
+        
+        let y = position.y
+        let x = position.x
+        
+        itemViews[y][x].bgView.backgroundColor = color
+    }
+    
     func updateItemViews(_ board: Board) {
         guard let itemViews = itemViews else {
             return
@@ -53,6 +88,20 @@ class BoardView: UIView {
     private func setItemViews() {
         guard let itemViews = itemViews else {
             return
+        }
+        
+        for y in 0...7 {
+            for x in 0...7 {
+                let itemView = itemViews[y][x]
+                itemView.$touched
+                    .sink { [weak self] position in
+                        guard let position = position else {
+                            return
+                        }
+                        self?.touchEventSubject.send(position)
+                    }
+                    .store(in: &subscriptions)
+            }
         }
 
         for index in 0...7 {

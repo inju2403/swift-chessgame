@@ -6,13 +6,14 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 class ChessGameViewModel {
     @Published var board: Board
     @Published var whiteScore: Int
     @Published var blackScore: Int
-    @Published var selectedItemView: BoardItemView?
+    @Published var selectedPosition: Position?
+    @Published var deselectedPosition: (Position, UIColor)?
     var possiblePositions = [String]()
     private var subscriptions = Set<AnyCancellable>()
     
@@ -117,49 +118,27 @@ class ChessGameViewModel {
         }
     }
     
-    func setTouchEvent(_ boardView: BoardView) {
-        guard let itemViews = boardView.itemViews else {
+    func setTouchEvent(_ position: Position) {
+        let curSelectedPosNum = position.posNum
+        guard let selectedPosition = self.selectedPosition else {
+            // 체스판 위에 선택된 말이 없을 때
+            self.selectedPosition = position
             return
         }
         
-        for y in 0...7 {
-            for x in 0...7 {
-                let itemView = itemViews[y][x]
-                itemView.$touched
-                    .sink { [weak self] touched in
-                        guard
-                            touched == true,
-                            let self = self,
-                            let posNum = itemView.posNum()
-                        else {
-                            return
-                        }
-                        
-                        guard let selectedItemView = self.selectedItemView else {
-                            // 체스판 위에 선택된 말이 없을 때
-                            itemView.bgView.backgroundColor = .systemRed
-                            self.selectedItemView = itemView
-                            return
-                        }
-                        
-                        if selectedItemView == itemView {
-                            // 체스판 위에 선택된 말이 자기 자신일 때
-                            itemView.bgView.backgroundColor = posNum % 2 == 1 ? .systemBrown : .white
-                            self.selectedItemView = nil
-                        } else {
-                            // 체스판 위에 선택된 말이 다른 말일 때
-                            // 이동 관련 로직 처리 TODO - perform 함수를 이용하여 이동 관련 로직을 처리하고 Board를 업데이트한다.
-                            
-                            
-                            // 다른 말로 포커싱을 바꾼다.
-                            guard let posNum = selectedItemView.posNum() else { return }
-                            selectedItemView.bgView.backgroundColor = posNum % 2 == 1 ? .systemBrown : .white
-                            itemView.bgView.backgroundColor = .systemRed
-                            self.selectedItemView = itemView
-                        }
-                    }
-                    .store(in: &subscriptions)
-            }
+        if selectedPosition == position {
+            // 체스판 위에 선택된 말이 자기 자신일 때
+            self.deselectedPosition = (selectedPosition, curSelectedPosNum % 2 == 1 ? .systemBrown : .white)
+            self.selectedPosition = nil
+        } else {
+            // 체스판 위에 선택된 말이 다른 말일 때
+            // 이동 관련 로직 처리 TODO - perform 함수를 이용하여 이동 관련 로직을 처리하고 Board를 업데이트한다.
+            
+            
+            // 다른 말로 포커싱을 바꾼다.
+            let beforeSelectedPosNum = selectedPosition.posNum
+            self.deselectedPosition = (selectedPosition, beforeSelectedPosNum % 2 == 1 ? .systemBrown : .white)
+            self.selectedPosition = position
         }
     }
     
