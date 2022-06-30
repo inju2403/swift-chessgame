@@ -10,6 +10,7 @@ protocol Chessman {
     var type: ChessmanType { get }
     var color: ChessmanColor { get }
     var shape: String { get }
+    var position: Position { get set }
 }
 
 enum ChessmanType {
@@ -23,4 +24,13 @@ enum ChessmanType {
 enum ChessmanColor {
     case black
     case white
+}
+
+struct Position: Hashable {
+    var y: Int
+    var x: Int
+    
+    var posNum: Int {
+        return y + x
+    }
 }

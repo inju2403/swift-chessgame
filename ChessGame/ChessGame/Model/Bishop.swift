@@ -10,8 +10,9 @@ struct Bishop: Chessman {
     var type: ChessmanType
     var color: ChessmanColor
     var shape: String
+    var position: Position
     
-    init(type: ChessmanType, color: ChessmanColor) {
+    init(_ type: ChessmanType, _ color: ChessmanColor, _ position: Position) {
         self.type = type
         self.color = color
         if color == .black {
@@ -19,5 +20,6 @@ struct Bishop: Chessman {
         } else {
             self.shape = "♗"
         }
+        self.position = position
     }
 }

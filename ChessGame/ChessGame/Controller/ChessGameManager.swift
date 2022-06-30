@@ -9,8 +9,8 @@ import Foundation
 
 class ChessGameManager {
     @Published var boardPosition: [[Chessman?]]
-    var whiteScore: Int
-    var blackScore: Int
+    @Published var whiteScore: Int
+    @Published var blackScore: Int
     var possiblePositions = [String]()
     
     init(boardPosition: [[Chessman?]], whiteScore: Int = 38, blackScore: Int = 38) {
